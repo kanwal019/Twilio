@@ -1,0 +1,49 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script type="text/javascript" src="~/Scripts/jquery-3.1.1.js"></script>
+    <script type="text/javascript">
+        function sendMessage()
+        {
+            var toNumber = $("#toNumber").val();
+            var toMessage = $("#toMessage").val();
+            //var d = new Date();
+
+            $.ajax({
+                type: "POST",
+                async: true,
+                cache: false,
+                url: "../TwilioMessage/SendMessage",
+                data: { toNumber: toNumber, messageDesc: toMessage },
+                success: function (data) 
+                {
+                    if(data != null && data != "")
+                        $("#log").html("<pre>Message successfully sent to " + toNumber + " on " + Date() + " !!</pre>");
+                    else
+                        $("#log").html("<pre>Message not sent to " + toNumber + " on " + Date() + " !!</pre>");
+                },
+                error: function (e) 
+                {
+                    $("#log").html("<pre>Message not sent to " + toNumber + " on " + Date() + " !!</pre>");
+                    console.log("Issue Details -");
+                    console.log(e);
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <input type="text" id="toNumber" placeholder="Phone Number" />
+    <textarea id="toMessage">Enter your message here....</textarea>
+    <input type="submit" onclick="sendMessage()" />
+    <div id="log"></div>
+</body>
+</html>
